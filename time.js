@@ -1,5 +1,5 @@
-var maxParticles = 200; // Cap on number of particles for performance reasons.
-var emissionRate = 4; // Per Emitter, Per Frame
+var maxParticles = 20000; // Cap on number of particles for performance reasons.
+var emissionRate = 20; // Per Emitter, Per Frame
 var particleSize = 1; // How big our particles are.
 
 var TimeStream = function (canvas, context) {
@@ -26,7 +26,6 @@ TimeStream.prototype.clear = function Clear() {
 
 TimeStream.prototype.run = function Run() {
   this.timeStep();
-
   // Launch the animation loop.
   // We use this instread of setInterval because it lets the browser
   // do more intelligent scheduling for us.
@@ -40,7 +39,7 @@ TimeStream.prototype.update = function Update() {
 };
 
 TimeStream.prototype.draw = function Draw() {
-  this.context.fillStyle = 'rgb(0,0,255)';
+  this.context.fillStyle = 'rgb(255,255,255)';
   var context = this.context;
 
   _.each(this.particles, function (particle) {
@@ -50,7 +49,7 @@ TimeStream.prototype.draw = function Draw() {
 };
 
 TimeStream.prototype.addNewParticles = function AddNewParticles() {
-  if (this.particles.length > maxParticles) {
+  if (this.particles.length > maxParticles + 5) {
     return;
   }
 
@@ -80,6 +79,6 @@ TimeStream.prototype.plotParticles = function PlotParticles() {
     currentParticles.push(particle);
   });
 
-  this.particle = currentParticles; // Reset particles.
+  this.particles = currentParticles; // Reset particles.
 };
 
