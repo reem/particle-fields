@@ -4,7 +4,7 @@ $(document).ready(function () {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  var timeStream = new TimeStream(canvas, ctx);
+  timeStream = new TimeStream(canvas, ctx);
   timeStream.addEmitter(
     new Emitter(new Vector(100, 230), Vector.fromAngle(5, 0)));
 
@@ -35,7 +35,7 @@ $(document).ready(function () {
       timeStream.addFieldParticle(
         new FieldParticle(new Vector(Math.random() * 1000, Math.random() * 1000),
           new Vector((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2), undefined,
-          (Math.random() -0.5) * 1000)
+          (Math.random() -0.5) * 10000)
       );
     }); 
   }, 3000);

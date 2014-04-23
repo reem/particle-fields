@@ -1,5 +1,5 @@
 var maxParticles = 10000; // Cap on number of particles for performance reasons.
-var emissionRate = 4; // Per Emitter, Per Frame
+var emissionRate = 8; // Per Emitter, Per Frame
 var particleSize = 1; // How big our particles are.
 
 var TimeStream = function (canvas, context) {
