@@ -6,23 +6,38 @@ $(document).ready(function () {
 
   var timeStream = new TimeStream(canvas, ctx);
   timeStream.addEmitter(
-    new Emitter(new Vector(100, 230), Vector.fromAngle(2, 0)));
+    new Emitter(new Vector(100, 230), Vector.fromAngle(5, 0)));
+
   timeStream.addEmitter(
     new Emitter(new Vector(100, 430), Vector.fromAngle(5, 0)));
+
   timeStream.addEmitter(
     new Emitter(new Vector(100, 630), Vector.fromAngle(5, 0)));
+
   timeStream.addEmitter(
-    new Emitter(new Vector(900, 630), Vector.fromAngle(2, -Math.PI)));
+    new Emitter(new Vector(900, 230), Vector.fromAngle(5, -Math.PI)));
 
-  timeStream.addField(
-    new Field(new Vector(600, 430), -400));
+  timeStream.addEmitter(
+    new Emitter(new Vector(900, 430), Vector.fromAngle(5, -Math.PI)));
 
-  timeStream.addField(
-    new Field(new Vector(600, 630), 200));
+  timeStream.addEmitter(
+    new Emitter(new Vector(900, 630), Vector.fromAngle(5, -Math.PI)));
 
-  timeStream.addField(
-    new Field(new Vector(600, 230), 800));
+  timeStream.addEmitter(
+    new Emitter(new Vector(500, 100), Vector.fromAngle(5, Math.PI / 2)));
 
+  timeStream.addEmitter(
+    new Emitter(new Vector(500, 800), Vector.fromAngle(5, -Math.PI / 2)));
 
+  setInterval(function () {
+    if (timeStream.fields.length > 5) { return; }
+      times(5, function () {
+      timeStream.addFieldParticle(
+        new FieldParticle(new Vector(Math.random() * 1000, Math.random() * 1000),
+          new Vector((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2), undefined,
+          (Math.random() -0.5) * 1000)
+      );
+    }); 
+  }, 3000);
   timeStream.run();
 });

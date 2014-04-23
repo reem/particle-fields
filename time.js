@@ -1,4 +1,4 @@
-var maxParticles = 20000; // Cap on number of particles for performance reasons.
+var maxParticles = 10000; // Cap on number of particles for performance reasons.
 var emissionRate = 4; // Per Emitter, Per Frame
 var particleSize = 1; // How big our particles are.
 
@@ -17,6 +17,11 @@ TimeStream.prototype.addEmitter = function (emitter) {
 
 TimeStream.prototype.addField = function (field) {
   this.fields.push(field);
+};
+
+TimeStream.prototype.addFieldParticle = function (fieldParticle) {
+  this.particles.push(fieldParticle);
+  this.fields.push(fieldParticle.field);
 };
 
 TimeStream.prototype.timeStep = function TimeStep() {
@@ -41,6 +46,13 @@ TimeStream.prototype.run = function Run() {
 TimeStream.prototype.update = function Update() {
   this.addNewParticles();
   this.plotParticles();
+  this.filterFields();
+};
+
+TimeStream.prototype.filterFields = function FilterFields() {
+  this.fields = _.filter(this.fields, function (field) {
+    return withinBounds(this.canvas.width, this.canvas.height, field.position); 
+  }, this);
 };
 
 TimeStream.prototype.draw = function Draw() {
@@ -67,6 +79,10 @@ TimeStream.prototype.addNewParticles = function AddNewParticles() {
   }, this);
 };
 
+var withinBounds = function (xBound, yBound, vector) {
+  return !(vector.x > xBound || vector.y < 0 || vector.y > yBound);
+};
+
 TimeStream.prototype.plotParticles = function PlotParticles() {
   var currentParticles = []; // Eventually replaces this.particles to clear out old particles. 
   var xBound = this.canvas.width;
@@ -75,7 +91,7 @@ TimeStream.prototype.plotParticles = function PlotParticles() {
   _.each(this.particles, function (particle) {
     var pos = particle.position;
 
-    if (pos.x < 0 || pos.x > xBound || pos.y < 0 || pos.y > yBound) {
+    if (!(withinBounds(xBound, yBound, pos)))  {
       return; // Don't add this particle and move on.
     }
 

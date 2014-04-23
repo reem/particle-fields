@@ -28,3 +28,16 @@ Particle.prototype.submitToFields = function (fields) {
 
   this.acceleration = totalAcceleration.clone();
 };
+
+var FieldParticle = function (position, velocity, acceleration, mass) {
+  Particle.call(this, position, velocity, acceleration);
+
+  this.field = new Field(position.clone(), mass);
+};
+
+FieldParticle.prototype = Object.create(Particle.prototype);
+
+FieldParticle.prototype.move = function (timeRate) {
+  Particle.prototype.move.call(this, timeRate);
+  this.field.position = this.position.clone();
+};
