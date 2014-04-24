@@ -20,6 +20,11 @@ Vector.prototype.angle = function VectorAngle() {
   return Math.atan2(this.y, this.x);
 };
 
+Vector.prototype.scale = function VectorScale(scalar) {
+  this.x *= scalar;
+  this.y *= scalar;
+};
+
 Vector.prototype.immutableScale = function VectorImmutableScale (scalar) {
   return new Vector(this.x * scalar, this.y * scalar);
 };

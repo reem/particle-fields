@@ -18,6 +18,9 @@ Particle.prototype.submitToFields = function (fields) {
   var totalAcceleration = new Vector(0, 0);
 
   _.each(fields, function (field) {
+    if (this.field && this.field === field) {
+      return;
+    }
     var vector = new Vector(field.position.x - this.position.x,
                             field.position.y - this.position.y);
 
