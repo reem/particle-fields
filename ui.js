@@ -31,11 +31,13 @@ $(document).ready(function () {
 
   setInterval(function () {
     if (timeStream.fields.length > 5) { return; }
-      times(5, function () {
+    times(5, function () {
+      var position = new Vector(Math.random() * 1000, Math.random() * 1000);
       timeStream.addFieldParticle(
-        new FieldParticle(new Vector(Math.random() * 1000, Math.random() * 1000),
+        new FieldParticle(position,
           new Vector((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2), undefined,
-          (Math.random() -0.5) * 10000)
+          [new Field(position, -5000),
+           SelectiveField.onlyFieldParticles(position, 500000000, 20)])
       );
     }); 
   }, 3000);

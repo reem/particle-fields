@@ -1,6 +1,7 @@
-var Field = function FieldConstructor(point, mass) {
+var Field = function FieldConstructor(point, mass, range) {
   this.position = point;
   this.setMass(mass);
+  this.range = range || Infinity;
 };
 
 Field.prototype.setMass = function(mass) {
@@ -43,5 +44,7 @@ SelectiveField.prototype.getForce = function(distance, particle) {
 };
 
 var onlyFieldParticles = function (particle) {
-  return (particle instanceof FieldParticle);
+  var result = (particle instanceof FieldParticle);
+  if (result) particle.color = "#0ff";
+  return result;
 };

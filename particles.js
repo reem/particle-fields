@@ -2,6 +2,7 @@ var Particle = function ParticleConstructor (position, velocity, acceleration) {
   this.position     = position     || new Vector(0, 0);
   this.velocity     = velocity     || new Vector(0, 0);
   this.acceleration = acceleration || new Vector(0, 0);
+  this.color = "#fff";
 };
 
 Particle.prototype.move = function ParticleMove (timeRate) {
@@ -24,23 +25,26 @@ Particle.prototype.submitToFields = function (fields) {
     var vector = new Vector(field.position.x - this.position.x,
                             field.position.y - this.position.y);
 
-    var force = field.mass / Math.pow(vector.x*vector.x + vector.y*vector.y, 1.5);
+    var force = field.getForce(vector, this);
 
-    totalAcceleration.add(vector.immutableScale(force));
+    vector.scale(force);
+    totalAcceleration.add(vector);
   }, this);
 
   this.acceleration = totalAcceleration.clone();
 };
 
-var FieldParticle = function (position, velocity, acceleration, mass) {
+var FieldParticle = function (position, velocity, acceleration, fields) {
   Particle.call(this, position, velocity, acceleration);
-
-  this.field = new Field(position.clone(), mass);
+  this.fields = fields;
 };
 
 FieldParticle.prototype = Object.create(Particle.prototype);
+FieldParticle.prototype.constructor = FieldParticle;
 
 FieldParticle.prototype.move = function (timeRate) {
   Particle.prototype.move.call(this, timeRate);
-  this.field.position = this.position.clone();
+  _.each(this.fields, function (field) {
+    field.position = this.position.clone();
+  }, this);
 };

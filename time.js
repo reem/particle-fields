@@ -1,5 +1,5 @@
 var maxParticles = 10000; // Cap on number of particles for performance reasons.
-var emissionRate = 8; // Per Emitter, Per Frame
+var emissionRate = 4; // Per Emitter, Per Frame
 var particleSize = 1; // How big our particles are.
 
 var TimeStream = function (canvas, context) {
@@ -21,7 +21,7 @@ TimeStream.prototype.addField = function (field) {
 
 TimeStream.prototype.addFieldParticle = function (fieldParticle) {
   this.particles.push(fieldParticle);
-  this.fields.push(fieldParticle.field);
+  this.fields = this.fields.concat(fieldParticle.fields);
 };
 
 TimeStream.prototype.timeStep = function TimeStep() {
@@ -56,10 +56,10 @@ TimeStream.prototype.filterFields = function FilterFields() {
 };
 
 TimeStream.prototype.draw = function Draw() {
-  this.context.fillStyle = 'rgb(255,255,255)';
   var context = this.context;
 
   _.each(this.particles, function (particle) {
+    context.fillStyle = particle.color;
     context.fillRect(particle.position.x, particle.position.y, 
       particleSize, particleSize); // Draw a rectangle of the right size.
   });
